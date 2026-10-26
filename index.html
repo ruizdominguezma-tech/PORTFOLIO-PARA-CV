@@ -3,95 +3,332 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio Periodístico - Trabajos y Documentos</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Portfolio Periodístico - Miguel Ángel Ruiz Domínguez</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f19;
-      --card-bg: #151d30;
-      --card-hover: #1c2742;
-      --text: #f1f5f9;
-      --text-muted: #94a3b8;
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --border: #263352;
-      --modal-bg: #0f172a;
+      --bg: #0d1117;
+      --card-bg: rgba(22, 27, 34, 0.85);
+      --card-hover: rgba(33, 38, 45, 0.95);
+      --text: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --border: rgba(48, 54, 61, 0.8);
+      --modal-bg: rgba(13, 17, 23, 0.95);
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    header { padding: 4rem 1.5rem 2rem; text-align: center; max-width: 900px; margin: 0 auto; }
-    header h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
-    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 300; }
-    
-    .filters { display: flex; justify-content: center; gap: 0.75rem; margin: 2.5rem 0 1rem; flex-wrap: wrap; }
-    .filter-btn {
-      background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted);
-      padding: 0.6rem 1.5rem; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease;
-      font-weight: 500; font-size: 0.95rem;
+    body { 
+      background-color: var(--bg); 
+      color: var(--text); 
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      position: relative;
+      min-height: 100vh;
     }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.75rem; max-width: 1250px; margin: 0 auto; padding: 1rem 1.5rem 5rem; }
-    .card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-      padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;
-      transition: all 0.25s ease; cursor: pointer; position: relative; overflow: hidden;
+    /* Fondo Periodístico Difuminado */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to bottom, rgba(13, 17, 23, 0.88), rgba(13, 17, 23, 0.95)), 
+                        url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1920&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      filter: blur(4px) grayscale(40%);
+      z-index: -1;
+      transform: scale(1.02);
     }
-    .card:hover { transform: translateY(-5px); border-color: var(--accent); background: var(--card-hover); }
     
-    .tag { 
-      display: inline-block; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; 
-      font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 6px; 
-      text-transform: uppercase; margin-bottom: 1rem; width: fit-content; letter-spacing: 0.05em;
+    /* Cabecera Estilo Prensa Limpia */
+    header { 
+      padding: 4.5rem 1.5rem 2rem; 
+      text-align: center; 
+      max-width: 950px; 
+      margin: 0 auto; 
     }
-    .card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; font-weight: 600; line-height: 1.4; color: #fff; }
-    .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; line-height: 1.6; }
+
+    .masthead-meta {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    header h1 { 
+      font-family: 'Playfair Display', serif;
+      font-size: 3.4rem; 
+      font-weight: 800; 
+      margin-bottom: 0.75rem; 
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    
+    header p { 
+      color: var(--text-muted); 
+      font-size: 1.15rem; 
+      font-weight: 300; 
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 2rem auto 1rem;
+      max-width: 800px;
+    }
+    
+    .filters { display: flex; justify-content: center; gap: 0.75rem; margin: 1.5rem 0 2rem; flex-wrap: wrap; }
+    .filter-btn {
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      color: var(--text-muted);
+      padding: 0.6rem 1.6rem; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      transition: all 0.25s ease;
+      font-weight: 500; 
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+    }
+    .filter-btn.active, .filter-btn:hover { 
+      background: var(--accent); 
+      border-color: var(--accent); 
+      color: #000; 
+      font-weight: 600;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+      gap: 2rem; 
+      max-width: 1250px; 
+      margin: 0 auto; 
+      padding: 1rem 1.5rem 5rem; 
+    }
+
+    /* Tarjetas Glassmorphism */
+    .card {
+      background: var(--card-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 12px;
+      padding: 1.8rem; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+      cursor: pointer; 
+      position: relative; 
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0.7;
+    }
+
+    .card:hover { 
+      transform: translateY(-6px); 
+      border-color: var(--accent); 
+      background: var(--card-hover);
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7);
+    }
+
+    .tag { 
+      display: inline-block; 
+      background: rgba(56, 189, 248, 0.1); 
+      color: var(--accent); 
+      font-size: 0.72rem; 
+      font-weight: 700; 
+      padding: 0.3rem 0.75rem; 
+      border-radius: 4px; 
+      text-transform: uppercase; 
+      margin-bottom: 1rem; 
+      width: fit-content; 
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .card h3 { 
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; 
+      margin-bottom: 0.8rem; 
+      font-weight: 700; 
+      line-height: 1.35; 
+      color: #ffffff; 
+    }
+
+    .card p { 
+      color: var(--text-muted); 
+      font-size: 0.92rem; 
+      margin-bottom: 1.5rem; 
+      flex-grow: 1; 
+      line-height: 1.6; 
+      font-weight: 300;
+    }
     
     .card-footer { 
-      font-size: 0.85rem; color: #64748b; font-weight: 500; display: flex; 
-      justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem;
+      font-size: 0.82rem; 
+      color: #6e7681; 
+      font-weight: 500; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      border-top: 1px solid var(--border); 
+      padding-top: 1rem;
     }
-    .card-action { color: var(--accent); font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem; }
+
+    .card-action { 
+      color: var(--accent); 
+      font-weight: 600; 
+      font-size: 0.82rem; 
+      display: flex; 
+      align-items: center; 
+      gap: 0.3rem; 
+    }
 
     /* Modal Visor */
     .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000;
-      justify-content: center; align-items: center; padding: 1.5rem;
+      display: none; 
+      position: fixed; 
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.88); 
+      backdrop-filter: blur(12px); 
+      z-index: 1000;
+      justify-content: center; 
+      align-items: center; 
+      padding: 1.5rem;
     }
+
     .modal-content {
-      background: var(--modal-bg); border: 1px solid var(--border); border-radius: 20px;
-      max-width: 850px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2.5rem;
-      position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      background: var(--modal-bg); 
+      border: 1px solid var(--border); 
+      border-radius: 16px;
+      max-width: 850px; 
+      width: 100%; 
+      max-height: 85vh; 
+      overflow-y: auto; 
+      padding: 2.5rem;
+      position: relative; 
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
     }
+
     .close-btn {
-      position: absolute; top: 1.5rem; right: 1.5rem; background: var(--card-bg);
-      border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px;
-      border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+      position: absolute; 
+      top: 1.5rem; right: 1.5rem; 
+      background: var(--card-bg);
+      border: 1px solid var(--border); 
+      color: var(--text); 
+      width: 36px; height: 36px;
+      border-radius: 50%; 
+      cursor: pointer; 
+      font-size: 1.2rem; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
       z-index: 10;
     }
-    .modal-body { margin-top: 1.5rem; color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; }
-    .modal-body h2 { color: #fff; font-size: 1.8rem; margin-bottom: 0.5rem; padding-right: 2rem; }
-    .modal-body .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .modal-body p { margin-bottom: 1.2rem; }
-    .modal-body blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; color: #a5b4fc; font-style: italic; }
-    
-    .actions-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
-    .link-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent);
-      color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;
-      font-weight: 600; transition: background 0.2s;
+
+    .modal-body { margin-top: 1rem; color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; }
+    .modal-body h2 { 
+      font-family: 'Playfair Display', serif; 
+      color: #fff; 
+      font-size: 2rem; 
+      margin-bottom: 0.5rem; 
+      padding-right: 2rem; 
     }
-    .link-btn:hover { background: var(--accent-hover); }
+
+    .modal-body .meta { 
+      color: var(--text-muted); 
+      font-size: 0.88rem; 
+      margin-bottom: 1.5rem; 
+      padding-bottom: 1rem; 
+      border-bottom: 1px solid var(--border); 
+    }
+
+    .modal-body p { margin-bottom: 1.2rem; font-weight: 300; }
+    .modal-body blockquote { 
+      font-family: 'Playfair Display', serif;
+      border-left: 3px solid var(--accent); 
+      padding-left: 1.2rem; 
+      margin: 1.5rem 0; 
+      color: #7dd3fc; 
+      font-style: italic; 
+      font-size: 1.15rem;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    
+    .actions-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.8rem; }
+    .link-btn {
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.5rem; 
+      background: var(--accent);
+      color: #000; 
+      padding: 0.75rem 1.5rem; 
+      border-radius: 6px; 
+      text-decoration: none;
+      font-weight: 700; 
+      transition: background 0.2s;
+    }
+    .link-btn:hover { background: var(--accent-hover); color: #fff; }
+
+    footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      max-width: 1250px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Portfolio Periodístico</h1>
-    <p>Trabajos de prensa escrita, investigación periodística y reportajes audiovisuales.</p>
+    <div class="masthead-meta">Dossier & Portfolio Periodístico</div>
+    <h1>Miguel Ángel Ruiz Domínguez</h1>
+    <p>Selección de trabajos de prensa escrita, investigación periodística, fotorreportaje y reportajes audiovisuales.</p>
+    
+    <div class="divider"></div>
+
     <div class="filters">
       <button class="filter-btn active" onclick="filterProjects('all', this)">Todos los Trabajos</button>
       <button class="filter-btn" onclick="filterProjects('prensa', this)">Prensa Escrita</button>
@@ -107,6 +344,10 @@
       <div class="modal-body" id="modal-body"></div>
     </div>
   </div>
+
+  <footer>
+    <p>© 2026 Miguel Ángel Ruiz Domínguez — Portfolio Periodístico Profesional</p>
+  </footer>
 
   <script>
     var projects = [
@@ -171,7 +412,25 @@
         tag: "Televisión / Reportaje",
         medium: "Diez TV Úbeda",
         desc: "Reportaje audiovisual sobre los preparativos de los 640 hermanos de la filial baezana para la histórica venida septenal de la Virgen del Rocío a Almonte.",
-        content: '<h2>La Hermandad del Rocío de Baeza ante el Rocío Chico y la Venida</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Reportaje de Televisión</div><p>La Hermandad Filial de Nuestra Señora del Rocío de Baeza se desplaza a Almonte para participar en el traslado septenal de la Virgen por el Camino de los Llanos.</p><div class="actions-group"><a href="https://drive.google.com/file/d/1ZBMSI1vjAr5RaeTAfkUVtQHcaLWXDIiK/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📝 Abrir Documento en Google Drive ↗</a></div>'
+        content: '<h2>La Hermandad del Rocío de Baeza ante el Rocío Chico y la Venida</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Reportaje de Televisión</div><p>La Hermandad Filial de Nuestra Señora del Rocío de Baeza se desplaza a Almonte para participar en el traslado septenal de la Virgen por el Camino de los Llanos.</p><div class="video-container"><iframe src="https://www.youtube.com/embed/I4kKlC1vCi4?start=954" allowfullscreen></iframe></div><div class="actions-group"><a href="https://www.youtube.com/watch?v=I4kKlC1vCi4&t=954s" target="_blank" rel="noopener noreferrer" class="link-btn">▶️ Abrir en YouTube ↗</a></div>'
+      },
+      {
+        id: "feria-rus",
+        title: "Reportaje de la Feria de Rus 2026",
+        cat: "tv",
+        tag: "Televisión / Reportaje",
+        medium: "Diez TV Úbeda",
+        desc: "Reportaje sobre el ambiente en Rus durante un día de feria con diferentes actividades y testimonios de los vecinos sobre cómo viven estos días.",
+        content: '<h2>Reportaje de la Feria de Rus 2026</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Cobertura Local</div><p>Un recorrido periodístico por el ambiente festivo de Rus durante su día de feria, mostrando las distintas actividades programadas y recogiendo las vivencias de los vecinos en estas fechas señaladas.</p><div class="video-container"><iframe src="https://www.youtube.com/embed/okzPV9xyzVE" allowfullscreen></iframe></div><div class="actions-group"><a href="https://www.youtube.com/watch?v=okzPV9xyzVE" target="_blank" rel="noopener noreferrer" class="link-btn">▶️ Abrir en YouTube ↗</a></div>'
+      },
+      {
+        id: "recepcion-emigrantes-rus",
+        title: "Recepción de emigrantes de Rus 2026",
+        cat: "tv",
+        tag: "Televisión / Reportaje",
+        medium: "Diez TV Úbeda",
+        desc: "Homenaje a las personas que salieron del pueblo en su juventud y que regresan al municipio con motivo de las fiestas patronales.",
+        content: '<h2>Recepción de emigrantes de Rus 2026</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Cobertura Especial</div><p>Cobertura del emotivo acto institucional y vecinal que rinde homenaje a los paisanos que tuvieron que emigrar de Rus en su juventud y que retornan a su tierra para celebrar las fiestas.</p><div class="video-container"><iframe src="https://www.youtube.com/embed/NRrb-1oKkkY?start=451" allowfullscreen></iframe></div><div class="actions-group"><a href="https://www.youtube.com/watch?v=NRrb-1oKkkY&t=451s" target="_blank" rel="noopener noreferrer" class="link-btn">▶️ Abrir en YouTube ↗</a></div>'
       },
       {
         id: "infoca-bombero",
@@ -190,7 +449,8 @@
       for (var i = 0; i < items.length; i++) {
         var p = items[i];
         html += '<article class="card" onclick="openModal(\'' + p.id + '\')">';
-        html += '<div><span class="tag">' + p.tag + '</span><h3>' + p.title + '</h3><p>' + p.desc + '</p></div>';
+        html += '<div>';
+        html += '<span class="tag">' + p.tag + '</span><h3>' + p.title + '</h3><p>' + p.desc + '</p></div>';
         html += '<div class="card-footer"><span>' + p.medium + '</span><span class="card-action">Ver Documento ↗</span></div>';
         html += '</article>';
       }
@@ -237,6 +497,12 @@
       if (!event || event.target.id === 'modal' || event.target.className === 'close-btn') {
         document.getElementById('modal').style.display = 'none';
         document.body.style.overflow = 'auto';
+        
+        var iframes = document.querySelectorAll('.modal iframe');
+        for (var i = 0; i < iframes.length; i++) {
+          var src = iframes[i].src;
+          iframes[i].src = src;
+        }
       }
     }
 
