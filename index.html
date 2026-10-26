@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Periodístico - Trabajos y Documentos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-hover: #1c2742;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --border: #263352;
+      --modal-bg: #0f172a;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+    
+    header { padding: 4rem 1.5rem 2rem; text-align: center; max-width: 900px; margin: 0 auto; }
+    header h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+    header p { color: var(--text-muted); font-size: 1.15rem; font-weight: 300; }
+    
+    .filters { display: flex; justify-content: center; gap: 0.75rem; margin: 2.5rem 0 1rem; flex-wrap: wrap; }
+    .filter-btn {
+      background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted);
+      padding: 0.6rem 1.5rem; border-radius: 9999px; cursor: pointer; transition: all 0.2s ease;
+      font-weight: 500; font-size: 0.95rem;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.75rem; max-width: 1250px; margin: 0 auto; padding: 1rem 1.5rem 5rem; }
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.75rem; display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.25s ease; cursor: pointer; position: relative; overflow: hidden;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--accent); background: var(--card-hover); }
+    
+    .tag { 
+      display: inline-block; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; 
+      font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 6px; 
+      text-transform: uppercase; margin-bottom: 1rem; width: fit-content; letter-spacing: 0.05em;
+    }
+    .card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; font-weight: 600; line-height: 1.4; color: #fff; }
+    .card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; line-height: 1.6; }
+    
+    .card-footer { 
+      font-size: 0.85rem; color: #64748b; font-weight: 500; display: flex; 
+      justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem;
+    }
+    .card-action { color: var(--accent); font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem; }
+
+    /* Modal Visor */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000;
+      justify-content: center; align-items: center; padding: 1.5rem;
+    }
+    .modal-content {
+      background: var(--modal-bg); border: 1px solid var(--border); border-radius: 20px;
+      max-width: 850px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2.5rem;
+      position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+    .close-btn {
+      position: absolute; top: 1.5rem; right: 1.5rem; background: var(--card-bg);
+      border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px;
+      border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+    }
+    .modal-body { margin-top: 1.5rem; color: #cbd5e1; font-size: 1.05rem; line-height: 1.8; }
+    .modal-body h2 { color: #fff; font-size: 1.8rem; margin-bottom: 0.5rem; padding-right: 2rem; }
+    .modal-body .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .modal-body p { margin-bottom: 1.2rem; }
+    .modal-body blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; margin: 1.5rem 0; color: #a5b4fc; font-style: italic; }
+    
+    .actions-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .link-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent);
+      color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;
+      font-weight: 600; transition: background 0.2s;
+    }
+    .link-btn:hover { background: var(--accent-hover); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Portfolio Periodístico</h1>
+    <p>Trabajos de prensa escrita, investigación periodística y reportajes audiovisuales.</p>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterProjects('all', this)">Todos los Trabajos</button>
+      <button class="filter-btn" onclick="filterProjects('prensa', this)">Prensa Escrita</button>
+      <button class="filter-btn" onclick="filterProjects('tv', this)">Televisión / Audio</button>
+    </div>
+  </header>
+
+  <main class="grid" id="projects-grid"></main>
+
+  <div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    var projects = [
+      {
+        id: "bm-proin",
+        title: "El Cajasol Sevilla BM Proin consigue un histórico ascenso a ASOBAL",
+        cat: "prensa",
+        tag: "Crónica / Prensa Escrita",
+        medium: "Trabajo Académico",
+        desc: "Crónica completa sobre la victoria 29-21 frente al BM Alcobendas y la recepción institucional tras el ascenso a la élite del balonmano.",
+        content: '<h2>El Cajasol Sevilla BM Proin consigue un histórico ascenso a la Liga ASOBAL</h2><div class="meta">Trabajo Académico | Redacción: Miguel Ángel Ruiz Domínguez</div><p><strong>Sevilla hace historia al conseguir colocar a un equipo entre los mejores de España en balonmano.</strong> El Cajasol Sevilla BM Proin ya forma parte de la historia deportiva de la ciudad tras lograr un histórico ascenso a la Liga ASOBAL tras imponerse 29-21 al BM Alcobendas en un pabellón del Centro Deportivo Amate abarrotado.</p><p>Desde primera hora de la tarde, la afición hispalense se dio cita en las inmediaciones del pabellón animada por una charanga y zonas de animación preparadas por el club. Tras conseguir la ventaja decisiva en el marcador con un parcial de 16-9 al descanso, la cancha estalló de júbilo con el pitido final al ritmo de "¡Campeones, campeones!".</p>blockquote>"Toda Sevilla se siente muy orgullosa de vosotros porque habéis hecho realidad un sueño esperado desde hace casi 50 años." — José Luis Sanz, Alcalde de Sevilla.</blockquote><div class="actions-group"><a href="https://drive.google.com/file/d/1Hf3VVL99ABx9cSeMmrYcv8CfWkg2Os6D/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📄 Abrir Documento en Google Drive ↗</a></div>'
+      },
+      {
+        id: "antonio-perez",
+        title: "Antonio Pérez: 'Sabíamos que era nuestra oportunidad de poner a la selección donde se merecía'",
+        cat: "prensa",
+        tag: "Entrevista / Prensa Escrita",
+        medium: "Trabajo Académico",
+        desc: "Entrevista en profundidad con el cierre jiennense nombrado MVP de la Eurocopa de Fútbol Sala tras conquistar el octavo título para España.",
+        content: '<h2>Entrevista a Antonio Pérez: "Sabíamos que era nuestra oportunidad"</h2><div class="meta">Trabajo Académico | Periodismo Deportivo</div><p>El futbolista jiennense Antonio Pérez analiza sus sensaciones tras haber sido nombrado MVP de la última Eurocopa, donde la selección española de fútbol sala se coronó campeona continental por octava vez en su historia.</p><p>A lo largo de la entrevista, Pérez repasa su trayectoria desde sus inicios en la provincia de Jaén hasta su consagración internacional, destacando el espíritu colectivo del vestuario para devolver a España a la cúspide del fútbol sala mundial.</p>blockquote>"Sabíamos que era nuestra oportunidad, que teníamos que volver a poner a la selección en el lugar que se merecía por historia y por el trabajo de todos los chavales que vienen apretando desde abajo."</blockquote><div class="actions-group"><a href="https://drive.google.com/file/d/1SPo8dMYPyTx6zhGw8DdHMYzREnc-0A_x/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📄 Abrir Documento en Google Drive ↗</a></div>'
+      },
+      {
+        id: "padel-espana",
+        title: "El pádel en España: una transformación increíble",
+        cat: "prensa",
+        tag: "Reportaje / Prensa Escrita",
+        medium: "Trabajo Académico",
+        desc: "Análisis sobre el crecimiento exponencial del pádel, su evolución desde deporte elitista hacia fenómeno de masas urbano y el impacto de los nuevos complejos.",
+        content: '<h2>El pádel en España: una transformación increíble</h2><div class="meta">Trabajo Académico | Reportaje de investigación</div><p>El pádel en España ha vivido una metamorfosis radical: de ser un deporte reservado a urbanizaciones exclusivas y clubes de lujo durante los años 80 y 90, ha pasado a convertirse en una de las disciplinas más practicadas en polideportivos municipales y centros urbanos de todo el país.</p><p>Según datos de la Federación Española de Pádel (FEP) y de la International Padel Federation (IPF), España cuenta con más de 17.000 pistas y supera las 105.000 licencias federadas, consolidándose como un espacio fundamental de socialización y deporte para todas las edades.</p><div class="actions-group"><a href="https://drive.google.com/file/d/19e9oEQB0NrI0lmPbPqIBfY7XNSdpUuTK/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📄 Abrir Documento en Google Drive ↗</a></div>'
+      },
+      {
+        id: "fabricas-sevilla",
+        title: "El Silencio del Patrimonio de Sevilla (Desindustrialización)",
+        cat: "prensa",
+        tag: "Fotorreportaje / Prensa Escrita",
+        medium: "Trabajo Académico",
+        desc: "Fotorreportaje y análisis sobre la desindustrialización de Sevilla, el patrimonio industrial abandonado y la reconversión de antiguas fábricas.",
+        content: '<h2>El Silencio del Patrimonio de Sevilla</h2><div class="meta">Trabajo Académico | Por Miguel Ángel Ruiz Domínguez, Javier Callejón Rodríguez y Alberto del Valle García</div><p>Un estudio en profundidad sobre el proceso de desindustrialización de Sevilla desde finales del siglo XX debido al cambio de modelo económico orientado al turismo. Analiza emblemáticos emplazamientos como el Retiro Obrero, la Fábrica de Vidrio de la Trinidad, la Fábrica de Perdigones y la Fábrica de Tejidos La María.</p><div class="actions-group"><a href="https://drive.google.com/file/d/1SgKHs2RDH-DLM01AADqoMorEyoYNEf9T/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📄 Abrir Fotorreportaje en Google Drive ↗</a></div>'
+      },
+      {
+        id: "paco-tito",
+        title: "Paco Tito valora el cambio de ubicación de su monumento a la alfarería",
+        cat: "tv",
+        tag: "Radio / Cadena SER",
+        medium: "Radio Úbeda - Cadena SER",
+        desc: "Noticia y cobertura del traslado de la icónica escultura dedicada al oficio alfarero desde la Plaza de la Constitución al Paseo de la Estación de Jaén.",
+        content: '<h2>Paco Tito valora el cambio de ubicación de su monumento en Jaén</h2><div class="meta">Publicado en <strong>Radio Úbeda - Cadena SER</strong> | Por Miguel Ángel Ruiz y Alfonso Fernández</div><p>El alfarero ubetense Paco Tito ha valorado de forma muy positiva el nuevo emplazamiento acordado para su emblemático monumento a la alfarería en la capital jiennense debido a las obras de remodelación en la Plaza de la Constitución.</p><div class="actions-group"><a href="https://cadenaser.com/andalucia/2026/07/10/paco-tito-valora-el-cambio-de-ubicacion-de-su-monumento-a-la-alfareria-en-jaen-radio-ubeda/" target="_blank" rel="noopener noreferrer" class="link-btn">🌐 Ver Noticia Oficial en Cadena SER ↗</a></div>'
+      },
+      {
+        id: "aitana-festmuve",
+        title: "Montaje del Concierto de Aitana (FestMuve Úbeda 2026)",
+        cat: "tv",
+        tag: "Televisión / Audio",
+        medium: "Diez TV Úbeda",
+        desc: "Cobertura periodística a pie de escenario sobre la infraestructura, montaje técnico y medidas de seguridad para la gira 'Cuarto Azul'.",
+        content: '<h2>Montaje del Concierto de Aitana en el FestMuve de Úbeda</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Cobertura Especial</div><p>Crónica completa desde el recinto ferial de Úbeda para conocer la trastienda del concierto de la gira <em>\'Cuarto Azul\'</em> de Aitana con entrevistas al equipo técnico y autoridades.</p><div class="actions-group"><a href="https://drive.google.com/file/d/12lR5iTnAZIDceL1JzozXtV1VNeD_0vCS/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">🎵 Escuchar Audio en Google Drive ↗</a></div>'
+      },
+      {
+        id: "rocio-baeza",
+        title: "Hermandad del Rocío de Baeza y la Venida a Almonte",
+        cat: "tv",
+        tag: "Televisión / Reportaje",
+        medium: "Diez TV Úbeda",
+        desc: "Reportaje audiovisual sobre los preparativos de los 640 hermanos de la filial baezana para la histórica venida septenal de la Virgen del Rocío a Almonte.",
+        content: '<h2>La Hermandad del Rocío de Baeza ante el Rocío Chico y la Venida</h2><div class="meta">Emitido en <strong>Diez TV Úbeda</strong> | Reportaje de Televisión</div><p>La Hermandad Filial de Nuestra Señora del Rocío de Baeza se desplaza a Almonte para participar en el traslado septenal de la Virgen por el Camino de los Llanos.</p><div class="actions-group"><a href="https://drive.google.com/file/d/1ZBMSI1vjAr5RaeTAfkUVtQHcaLWXDIiK/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📝 Abrir Documento en Google Drive ↗</a></div>'
+      },
+      {
+        id: "infoca-bombero",
+        title: "Entrevista a Bombero Forestal del Plan INFOCA",
+        cat: "tv",
+        tag: "Televisión / Entrevista",
+        medium: "Radio Úbeda - Cadena SER",
+        desc: "Testimonio en exclusiva con un bombero forestal ubetense integrado en el convoy andaluz movilizado en los incendios de Ávila y Madrid.",
+        content: '<h2>Entrevista a un Bombero Forestal del Plan INFOCA en la zona cero</h2><div class="meta">Emitido en <strong>Radio Úbeda - Cadena SER</strong> | Actualidad y Medio Ambiente</div><p>Un bombero forestal residente en Úbeda narra su experiencia tras desplazarse a la zona afectada por los graves incendios forestales de Madrid y Ávila dentro del convoy movilizado por el Plan INFOCA.</p><div class="actions-group"><a href="https://drive.google.com/file/d/1DQm7wOd8ls68qDlv0xt6wBp4bZ9ZbWy7/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-btn">📝 Abrir Documento en Google Drive ↗</a></div>'
+      }
+    ];
+
+    function renderProjects(items) {
+      var grid = document.getElementById('projects-grid');
+      var html = '';
+      for (var i = 0; i < items.length; i++) {
+        var p = items[i];
+        html += '<article class="card" onclick="openModal(\'' + p.id + '\')">';
+        html += '<div><span class="tag">' + p.tag + '</span><h3>' + p.title + '</h3><p>' + p.desc + '</p></div>';
+        html += '<div class="card-footer"><span>' + p.medium + '</span><span class="card-action">Ver Documento ↗</span></div>';
+        html += '</article>';
+      }
+      grid.innerHTML = html;
+    }
+
+    function filterProjects(cat, btnElement) {
+      var buttons = document.querySelectorAll('.filter-btn');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+      }
+      if (btnElement) {
+        btnElement.classList.add('active');
+      }
+      if (cat === 'all') {
+        renderProjects(projects);
+      } else {
+        var filtered = [];
+        for (var j = 0; j < projects.length; j++) {
+          if (projects[j].cat === cat) {
+            filtered.push(projects[j]);
+          }
+        }
+        renderProjects(filtered);
+      }
+    }
+
+    function openModal(id) {
+      var project = null;
+      for (var i = 0; i < projects.length; i++) {
+        if (projects[i].id === id) {
+          project = projects[i];
+          break;
+        }
+      }
+      if (project) {
+        document.getElementById('modal-body').innerHTML = project.content;
+        document.getElementById('modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal(event) {
+      if (!event || event.target.id === 'modal' || event.target.className === 'close-btn') {
+        document.getElementById('modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    renderProjects(projects);
+  </script>
+</body>
+</html>
